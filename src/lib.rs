@@ -4,7 +4,7 @@ use usb_device::{
     endpoint::{EndpointIn, EndpointOut},
 };
 
-use log::debug;
+use log::info;
 
 const BULK_ONLY_MASS_STORAGE_RESET: u8 = 0xff;
 const GET_MAX_LUN: u8 = 0xfe;
@@ -83,15 +83,15 @@ impl<B: UsbBus> UsbClass<B> for UMSClass<'_, B> {
             return;
         }
 
-        debug!("control_in for interface {}, request number {}", if_num, req.request);
+        info!("control_in for interface {}, request number {}", if_num, req.request);
 
         match req.request {
             BULK_ONLY_MASS_STORAGE_RESET => {
-                debug!("request BULK_ONLY_MASS_STORAGE_RESET");
+                info!("request BULK_ONLY_MASS_STORAGE_RESET");
                 xfer.accept_with(&[]).ok();
             }
             GET_MAX_LUN => {
-                debug!("request GET_MAX_LUN");
+                info!("request GET_MAX_LUN");
                 xfer.accept_with(&[0x00]).ok();
             },
             _ => {},
